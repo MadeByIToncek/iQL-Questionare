@@ -1,0 +1,255 @@
+[gd_scene load_steps=11 format=3 uid="uid://tqasku2rde7b"]
+
+[ext_resource type="Script" path="res://TransparencyController.cs" id="1_ccune"]
+[ext_resource type="FontFile" uid="uid://ciq1dr8rktyv5" path="res://Purista - bold.ttf" id="2_ptpn3"]
+[ext_resource type="Script" path="res://Controller.cs" id="2_ret2q"]
+[ext_resource type="FontFile" uid="uid://d0wjqek7sxig1" path="res://Purista - normal.ttf" id="3_agbya"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_e6f3a"]
+font = ExtResource("3_agbya")
+font_size = 34
+
+[sub_resource type="LabelSettings" id="LabelSettings_cp6ml"]
+font = ExtResource("2_ptpn3")
+font_size = 72
+
+[sub_resource type="LabelSettings" id="LabelSettings_rhxad"]
+font = ExtResource("3_agbya")
+font_size = 64
+font_color = Color(1, 0.133333, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1pljd"]
+font = ExtResource("3_agbya")
+font_size = 64
+font_color = Color(1, 0.8, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_7ie2s"]
+font = ExtResource("3_agbya")
+font_size = 64
+font_color = Color(0.266667, 1, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_hgphj"]
+font = ExtResource("3_agbya")
+font_size = 64
+font_color = Color(0, 0.6, 1, 1)
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_ccune")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="Box" type="Node2D" parent="."]
+position = Vector2(60, 757)
+
+[node name="Top" type="ColorRect" parent="Box"]
+offset_right = 1700.0
+offset_bottom = 4.0
+
+[node name="Bottom" type="ColorRect" parent="Box"]
+offset_top = 80.0
+offset_right = 1700.0
+offset_bottom = 84.0
+
+[node name="Left" type="ColorRect" parent="Box"]
+offset_right = 4.0
+offset_bottom = 80.0
+
+[node name="Right" type="ColorRect" parent="Box"]
+offset_left = 1696.0
+offset_right = 1700.0
+offset_bottom = 80.0
+
+[node name="TopLeftCorner" type="Node2D" parent="Box"]
+position = Vector2(6, 6)
+
+[node name="BottomRightCorner" type="Node2D" parent="Box"]
+position = Vector2(1694, 78)
+
+[node name="Blue" type="ColorRect" parent="Box"]
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 16.0
+offset_bottom = 78.0
+
+[node name="Green" type="ColorRect" parent="Box"]
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 26.0
+offset_bottom = 78.0
+
+[node name="Yellow" type="ColorRect" parent="Box"]
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 36.0
+offset_bottom = 78.0
+
+[node name="Red" type="ColorRect" parent="Box"]
+offset_left = 6.0
+offset_top = 6.0
+offset_right = 46.0
+offset_bottom = 78.0
+
+[node name="HowToSubmit" type="Label" parent="Box"]
+offset_left = 5.0
+offset_top = -115.0
+offset_right = 1715.0
+offset_bottom = -23.0
+text = "Hlasovat můžete pomocí chatu. Stačí napsat číslo odpovědi do zprávy. Například pokud chci zvolit možnost 1, napíšu do zprávy pouze číslo 1. Pokud bude ve zprávě jakýkoliv jiný znak, bude se počítat za neplatnou."
+label_settings = SubResource("LabelSettings_e6f3a")
+autowrap_mode = 3
+
+[node name="Question" type="Node2D" parent="."]
+
+[node name="Question" type="Label" parent="Question"]
+offset_left = 60.0
+offset_top = 35.0
+offset_right = 1865.0
+offset_bottom = 199.0
+text = "Kolik měsíců má Země?"
+label_settings = SubResource("LabelSettings_cp6ml")
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="Answers" type="Node2D" parent="."]
+
+[node name="Answer 1" type="Label" parent="Answers"]
+offset_left = 65.0
+offset_top = 230.0
+offset_right = 1765.0
+offset_bottom = 316.0
+text = "1) 0 měsíců"
+label_settings = SubResource("LabelSettings_rhxad")
+autowrap_mode = 3
+
+[node name="Answer 2" type="Label" parent="Answers"]
+offset_left = 65.0
+offset_top = 318.0
+offset_right = 1765.0
+offset_bottom = 405.0
+text = "2) 1 měsíc"
+label_settings = SubResource("LabelSettings_1pljd")
+autowrap_mode = 3
+
+[node name="Answer 3" type="Label" parent="Answers"]
+offset_left = 65.0
+offset_top = 405.0
+offset_right = 1765.0
+offset_bottom = 493.0
+text = "3) 2 měsíce"
+label_settings = SubResource("LabelSettings_7ie2s")
+autowrap_mode = 3
+
+[node name="Answer 4" type="Label" parent="Answers"]
+offset_left = 65.0
+offset_top = 490.0
+offset_right = 1765.0
+offset_bottom = 579.0
+text = "4) 3 měsíce"
+label_settings = SubResource("LabelSettings_hgphj")
+autowrap_mode = 2
+
+[node name="Window" type="Window" parent="."]
+title = "Configuration window"
+position = Vector2i(515, 36)
+size = Vector2i(445, 530)
+unresizable = true
+
+[node name="Controller" type="Node2D" parent="Window" node_paths=PackedStringArray("TopLeft", "BottomRight", "Red", "Yellow", "Green", "Blue", "ResetButton", "YoutubeStreamId", "Window", "Timer", "ChatHistory", "ClearVotesButton", "PrevQuestionButton", "NextQuestionButton", "FinishQuestionButton", "EditQuestionsButton", "Question", "Answers", "Box")]
+position = Vector2(2228, 208)
+script = ExtResource("2_ret2q")
+TopLeft = NodePath("../../Box/TopLeftCorner")
+BottomRight = NodePath("../../Box/BottomRightCorner")
+Red = NodePath("../../Box/Red")
+Yellow = NodePath("../../Box/Yellow")
+Green = NodePath("../../Box/Green")
+Blue = NodePath("../../Box/Blue")
+ResetButton = NodePath("../Reset")
+YoutubeStreamId = NodePath("../LineEdit")
+Window = NodePath("..")
+Timer = NodePath("../../Timer")
+ChatHistory = NodePath("../Chat")
+ClearVotesButton = NodePath("../ClearVotes")
+PrevQuestionButton = NodePath("../PreviousQuestion")
+NextQuestionButton = NodePath("../NextQuestion")
+FinishQuestionButton = NodePath("../Finish")
+EditQuestionsButton = NodePath("../Edit")
+Question = NodePath("../../Question")
+Answers = NodePath("../../Answers")
+Box = NodePath("../../Box")
+
+[node name="LineEdit" type="LineEdit" parent="Window"]
+offset_left = 30.0
+offset_top = 25.0
+offset_right = 330.0
+offset_bottom = 65.0
+theme_override_font_sizes/font_size = 20
+placeholder_text = "youtube stream id"
+
+[node name="Reset" type="Button" parent="Window"]
+offset_left = 333.0
+offset_top = 25.0
+offset_right = 413.0
+offset_bottom = 65.0
+text = "Reset"
+
+[node name="ClearVotes" type="Button" parent="Window"]
+offset_left = 30.0
+offset_top = 75.0
+offset_right = 130.0
+offset_bottom = 120.0
+text = "Clear votes"
+
+[node name="NextQuestion" type="Button" parent="Window"]
+offset_left = 285.0
+offset_top = 75.0
+offset_right = 413.0
+offset_bottom = 120.0
+text = "Next question"
+
+[node name="PreviousQuestion" type="Button" parent="Window"]
+offset_left = 140.0
+offset_top = 75.0
+offset_right = 273.89
+offset_bottom = 120.0
+text = "Prev Question"
+
+[node name="Finish" type="Button" parent="Window"]
+offset_left = 30.0
+offset_top = 133.0
+offset_right = 273.84
+offset_bottom = 178.0
+text = "Finish Q & show percentages"
+
+[node name="Edit" type="Button" parent="Window"]
+offset_left = 281.785
+offset_top = 133.0
+offset_right = 413.785
+offset_bottom = 178.0
+text = "Edit questions"
+
+[node name="Chat" type="RichTextLabel" parent="Window"]
+offset_left = 30.0
+offset_top = 210.0
+offset_right = 419.56
+offset_bottom = 510.0
+theme_override_fonts/normal_font = ExtResource("3_agbya")
+theme_override_fonts/mono_font = ExtResource("3_agbya")
+theme_override_fonts/italics_font = ExtResource("3_agbya")
+theme_override_fonts/bold_italics_font = ExtResource("2_ptpn3")
+theme_override_fonts/bold_font = ExtResource("2_ptpn3")
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+bbcode_enabled = true
+text = "[b]IToncek[/b] >> There is no stream setup yet!"
+scroll_active = false
+scroll_following = true
+threaded = true
+
+[node name="Timer" type="Timer" parent="."]
