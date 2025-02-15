@@ -1,40 +1,40 @@
 [gd_scene load_steps=11 format=3 uid="uid://tqasku2rde7b"]
 
-[ext_resource type="Script" path="res://TransparencyController.cs" id="1_ccune"]
-[ext_resource type="FontFile" uid="uid://ciq1dr8rktyv5" path="res://Purista - bold.ttf" id="2_ptpn3"]
-[ext_resource type="Script" path="res://Controller.cs" id="2_ret2q"]
-[ext_resource type="FontFile" uid="uid://d0wjqek7sxig1" path="res://Purista - normal.ttf" id="3_agbya"]
+[ext_resource type="Script" path="res://scripts/TransparencyController.cs" id="1_mc4aq"]
+[ext_resource type="FontFile" uid="uid://d0wjqek7sxig1" path="res://fonts/Purista - normal.ttf" id="2_4ebgf"]
+[ext_resource type="FontFile" uid="uid://ciq1dr8rktyv5" path="res://fonts/Purista - bold.ttf" id="3_jr6ma"]
+[ext_resource type="Script" path="res://scripts/Controller.cs" id="4_f3dao"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6f3a"]
-font = ExtResource("3_agbya")
+font = ExtResource("2_4ebgf")
 font_size = 34
 
 [sub_resource type="LabelSettings" id="LabelSettings_cp6ml"]
-font = ExtResource("2_ptpn3")
+font = ExtResource("3_jr6ma")
 font_size = 72
 
 [sub_resource type="LabelSettings" id="LabelSettings_rhxad"]
-font = ExtResource("3_agbya")
+font = ExtResource("2_4ebgf")
 font_size = 64
 font_color = Color(1, 0.133333, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_1pljd"]
-font = ExtResource("3_agbya")
+font = ExtResource("2_4ebgf")
 font_size = 64
 font_color = Color(1, 0.8, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7ie2s"]
-font = ExtResource("3_agbya")
+font = ExtResource("2_4ebgf")
 font_size = 64
 font_color = Color(0.266667, 1, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_hgphj"]
-font = ExtResource("3_agbya")
+font = ExtResource("2_4ebgf")
 font_size = 64
 font_color = Color(0, 0.6, 1, 1)
 
 [node name="Main" type="Node2D"]
-script = ExtResource("1_ccune")
+script = ExtResource("1_mc4aq")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -154,13 +154,13 @@ autowrap_mode = 2
 
 [node name="Window" type="Window" parent="."]
 title = "Configuration window"
-position = Vector2i(515, 36)
+position = Vector2i(2222, 200)
 size = Vector2i(445, 530)
 unresizable = true
 
 [node name="Controller" type="Node2D" parent="Window" node_paths=PackedStringArray("TopLeft", "BottomRight", "Red", "Yellow", "Green", "Blue", "ResetButton", "YoutubeStreamId", "Window", "Timer", "ChatHistory", "ClearVotesButton", "PrevQuestionButton", "NextQuestionButton", "FinishQuestionButton", "EditQuestionsButton", "Question", "Answers", "Box")]
 position = Vector2(2228, 208)
-script = ExtResource("2_ret2q")
+script = ExtResource("4_f3dao")
 TopLeft = NodePath("../../Box/TopLeftCorner")
 BottomRight = NodePath("../../Box/BottomRightCorner")
 Red = NodePath("../../Box/Red")
@@ -236,11 +236,11 @@ offset_left = 30.0
 offset_top = 210.0
 offset_right = 419.56
 offset_bottom = 510.0
-theme_override_fonts/normal_font = ExtResource("3_agbya")
-theme_override_fonts/mono_font = ExtResource("3_agbya")
-theme_override_fonts/italics_font = ExtResource("3_agbya")
-theme_override_fonts/bold_italics_font = ExtResource("2_ptpn3")
-theme_override_fonts/bold_font = ExtResource("2_ptpn3")
+theme_override_fonts/normal_font = ExtResource("2_4ebgf")
+theme_override_fonts/mono_font = ExtResource("2_4ebgf")
+theme_override_fonts/italics_font = ExtResource("2_4ebgf")
+theme_override_fonts/bold_italics_font = ExtResource("3_jr6ma")
+theme_override_fonts/bold_font = ExtResource("3_jr6ma")
 theme_override_font_sizes/bold_italics_font_size = 24
 theme_override_font_sizes/italics_font_size = 24
 theme_override_font_sizes/mono_font_size = 24
