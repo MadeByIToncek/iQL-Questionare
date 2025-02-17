@@ -55,6 +55,10 @@ public partial class Controller : Node2D {
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
+		if (!File.Exists("q.json")) {
+			GetTree().ChangeSceneToFile("res://scenes/editor.tscn");
+			return;
+		}
 		using StreamReader r = new("q.json");
 		
 		string json = r.ReadToEnd();
