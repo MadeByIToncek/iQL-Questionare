@@ -1,7 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using CSharpChatReceiver;
 using CSharpChatReceiver.records;
 using Godot;
+using Newtonsoft.Json;
+using Questionare.scripts;
+using ErrorEventArgs = CSharpChatReceiver.ErrorEventArgs;
+using PieChart = Questionare.scripts.PieChart;
 
 namespace Questionare;
 
@@ -17,53 +23,117 @@ public partial class Controller : Node2D {
 	[Export] public Window Window;
 	[Export] public Timer Timer;
 	[Export] public RichTextLabel ChatHistory;
+	[Export] public Label HowToVote;
+	[Export] public Label Question;
+	[Export] public Label A1;
+	[Export] public Label A2;
+	[Export] public Label A3;
+	[Export] public Label A4;
 
 	[Export] public Button ClearVotesButton;
 	[Export] public Button PrevQuestionButton;
 	[Export] public Button NextQuestionButton;
 	[Export] public Button FinishQuestionButton;
+	[Export] public Button Test;
 	[Export] public Button EditQuestionsButton;
 
-	[Export] public Node2D Question;
+	[Export] public Node2D QuestionBox;
 	[Export] public Node2D Answers;
 	[Export] public Node2D Box;
 
 	private readonly List<ChatItem> _messages = new(64);
-	private int _totalCount;
-	private int _red, _yellow, _green, _blue;
+	private readonly Dictionary<string,int> _votes = new(64);
 
+	private List<Question> _questions;
 	private int _questionPtr;
-	private int _questionCount;
 
 	private bool _isShowingAnswer;
+	private bool _isSuppressed = true;
+	private int _correctAnswer;
 
 	private ChatReceiver _chatReceiver;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
+		using StreamReader r = new("q.json");
+		
+		string json = r.ReadToEnd();
+		r.Close();
+		_questions = JsonConvert.DeserializeObject<List<Question>>(json);
+		
+		
 		Timer.Timeout += () => { _chatReceiver?.Execute(); };
 		ResetButton.Pressed += ResetSystem;
 		ClearVotesButton.Pressed += ClearVotes;
 		PrevQuestionButton.Pressed += () => {
 			if (_questionPtr > 0) {
-				_questionPtr--;
+				if (!_isSuppressed) {
+					_questionPtr--;
+				}
+				_isSuppressed = false;
+
+				SwitchToNewQuestion();
+			}
+			else {
+				ClearScreen();
 			}
 
-			SwitchToNewQuestion();
 		};
 		NextQuestionButton.Pressed += () => {
-			if (_questionPtr < _questionCount) {
-				_questionPtr++;
+			if (_questionPtr < _questions.Count-1) {
+				if (!_isSuppressed) {
+					_questionPtr++;
+				}
+				_isSuppressed = false;
+
+				SwitchToNewQuestion();
+			}
+			else {
+				ClearScreen();
 			}
 
-			SwitchToNewQuestion();
 		};
 		FinishQuestionButton.Pressed += FinishQuestion;
 		EditQuestionsButton.Pressed += () => {
-			GetTree().ChangeSceneToFile("res://editor.tscn");
+			GetTree().ChangeSceneToFile("res://scenes/editor.tscn");
+		};
+
+		Test.Pressed += () => {
+			int answer = 0;
+			switch (Random.Shared.Next(0, 4)) {
+				case 0:
+					answer = 1;
+					break;
+				case 1:
+					answer = 2;
+					break;
+				case 2:
+					answer = 3;
+					break;
+				case 3:
+					answer = 4;
+					break;
+			}
+			
+			_votes.Add("test"+Random.Shared.Next(0, 10), answer);
+			UpdateRatios();
 		};
 		
 		ResetColors();
+		ClearVotes();
+		ClearScreen();
+	}
+
+	private void ClearScreen() {
+		SetAllUiUsability(false);
+		_isSuppressed = true;
+		Tween fadeout = GetTree().CreateTween()
+			.SetParallel();
+		fadeout.TweenProperty(QuestionBox, "modulate", new Color(1, 1, 1, 0), .5);
+		fadeout.TweenProperty(Box, "modulate", new Color(1, 1, 1, 0), .5);
+		fadeout.TweenProperty(Answers, "modulate", new Color(1, 1, 1, 0), .5);
+		fadeout.Finished += () => SetAllUiUsability(true);
+		fadeout.Play();
 	}
 
 	private void FinishQuestion() {
@@ -73,12 +143,11 @@ public partial class Controller : Node2D {
 			.CreateTween()
 			.SetParallel();
 
-		int correctAnswer = 1;
 
-		tween.TweenProperty(Red, "modulate", correctAnswer == 1 ? _redColor : _redGrayColor, .3);
-		tween.TweenProperty(Yellow, "modulate", correctAnswer == 2 ? _yellowColor : _yellowGrayColor, .3);
-		tween.TweenProperty(Green, "modulate", correctAnswer == 3 ? _greenColor : _greenGrayColor, .3);
-		tween.TweenProperty(Blue, "modulate", correctAnswer == 4 ? _blueColor : _blueGrayColor, .3);
+		tween.TweenProperty(Red, "modulate", _correctAnswer == 1 ? _redColor : _redGrayColor, .3);
+		tween.TweenProperty(Yellow, "modulate", _correctAnswer == 2 ? _yellowColor : _yellowGrayColor, .3);
+		tween.TweenProperty(Green, "modulate", _correctAnswer == 3 ? _greenColor : _greenGrayColor, .3);
+		tween.TweenProperty(Blue, "modulate", _correctAnswer == 4 ? _blueColor : _blueGrayColor, .3);
 
 		tween.Finished += () => { SetAllUiUsability(true); };
 
@@ -114,23 +183,25 @@ public partial class Controller : Node2D {
 
 		Tween fadeout = GetTree().CreateTween()
 			.SetParallel();
-		fadeout.TweenProperty(Question, "modulate", new Color(1, 1, 1, 0), .5);
+		fadeout.TweenProperty(QuestionBox, "modulate", new Color(1, 1, 1, 0), .5);
 		fadeout.TweenProperty(Box, "modulate", new Color(1, 1, 1, 0), .5);
 		fadeout.TweenProperty(Answers, "modulate", new Color(1, 1, 1, 0), .5);
 
 		fadeout.Finished += () => {
 			ResetColors();
+			ClearVotes();
 			SwapQuestion();
 			GetTree().CreateTimer(.75).Timeout += () => {
 				Tween fadeinTitle = GetTree().CreateTween()
 					.SetParallel();
-				fadeinTitle.TweenProperty(Question, "modulate", new Color(1, 1, 1, 1), .5);
+				fadeinTitle.TweenProperty(QuestionBox, "modulate", new Color(1, 1, 1, 1), .5);
 				fadeinTitle.Finished += () => {
 					GetTree().CreateTimer(2).Timeout += () => {
 						Tween fadeInTheRest = GetTree().CreateTween();
 						fadeInTheRest.TweenProperty(Answers, "modulate", new Color(1, 1, 1, 1), .5);
 						fadeInTheRest.TweenInterval(.5);
 						fadeInTheRest.TweenProperty(Box, "modulate", new Color(1, 1, 1, 1), 1.5);
+
 						fadeInTheRest.Finished += () => { SetAllUiUsability(true); };
 						fadeInTheRest.Play();
 					};
@@ -149,7 +220,15 @@ public partial class Controller : Node2D {
 	}
 
 	private void SwapQuestion() {
-		//todo
+		Question q = _questions[_questionPtr];
+		
+		Question.SetText(q.Q);
+		A1.SetText("1) "+q.A1);
+		A2.SetText("2) "+q.A2);
+		A3.SetText("3) "+q.A3);
+		A4.SetText("4) "+q.A4);
+		
+		_correctAnswer = q.Correct;
 	}
 
 	private void SetAllUiUsability(bool usable) {
@@ -163,22 +242,14 @@ public partial class Controller : Node2D {
 	}
 
 	private void ClearVotes() {
-		_totalCount = 0;
-		_red = 0;
-		_yellow = 0;
-		_green = 0;
-		_blue = 0;
+		_votes.Clear();
 		UpdateRatios();
 	}
 
 	private void ResetSystem() {
 		GD.Print("Reset");
 		GD.Print(YoutubeStreamId.Text);
-		_totalCount = 0;
-		_red = 0;
-		_yellow = 0;
-		_green = 0;
-		_blue = 0;
+		ClearVotes();
 		UpdateRatios();
 		if (YoutubeStreamId.Text.Trim() == "") return;
 		Timer.Stop();
@@ -201,26 +272,19 @@ public partial class Controller : Node2D {
 
 				if (args.Item.Message.Trim().Length == 1) {
 					string msg = args.Item.Message.Trim();
-					if (int.TryParse(msg, out int result)) {
-						switch (result) {
-							case 1:
-								_red++;
-								break;
-							case 2:
-								_yellow++;
-								break;
-							case 3:
-								_green++;
-								break;
-							case 4:
-								_blue++;
-								break;
-						}
-
-						_totalCount++;
-					}
+					if (int.TryParse(msg, out int result) && !(_isShowingAnswer || _isSuppressed)) {
+						int vote = result switch {
+							1 => 1,
+							2 => 2,
+							3 => 3,
+							4 => 4,
+							_ => -1
+						};
+						_votes[args.Item.ChatAuthor.Name] = vote;
+					} else GD.Print("Mist");
 				}
 
+				UpdateRatios();
 				UpdateChatDisplay();
 				GD.Print(args.Item.ChatAuthor.Name + " => " + args.Item.Message);
 			}
@@ -230,17 +294,40 @@ public partial class Controller : Node2D {
 	}
 
 	private void UpdateRatios() {
-		float redratio = (float)_red / _totalCount,
-			yellowratio = (float)_yellow / _totalCount,
-			greenratio = (float)_green / _totalCount,
-			blueratio = (float)_blue / _totalCount;
+		int red = 0, yellow = 0, green = 0, blue = 0, count = 0;
+		
+		foreach ((string _, int vote) in _votes) {
+			switch (vote) {
+				case 1:
+					red++;
+					count++;
+					break;
+				case 2:
+					yellow++;
+					count++;
+					break;
+				case 3:
+					green++;
+					count++;
+					break;
+				case 4:
+					blue++;
+					count++;
+					break;
+			}
+		}
+		
+		float redratio = (float)red / count,
+			yellowratio = (float)yellow / count,
+			greenratio = (float)green / count,
+			blueratio = (float)blue / count;
 
 		// redratio = .25f;
 		// yellowratio = .25f;
 		// greenratio = .25f;
 		// blueratio = .25f;
 
-		if (_totalCount == 0) {
+		if (count == 0) {
 			redratio = 0;
 			yellowratio = 0;
 			greenratio = 0;

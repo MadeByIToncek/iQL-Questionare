@@ -43,7 +43,8 @@ offset_bottom = 1080.0
 color = Color(0, 0, 0, 1)
 
 [node name="Box" type="Node2D" parent="."]
-position = Vector2(60, 757)
+modulate = Color(1, 1, 1, 0)
+position = Vector2(60, 942)
 
 [node name="Top" type="ColorRect" parent="Box"]
 offset_right = 1700.0
@@ -72,37 +73,39 @@ position = Vector2(1694, 78)
 [node name="Blue" type="ColorRect" parent="Box"]
 offset_left = 6.0
 offset_top = 6.0
-offset_right = 16.0
+offset_right = 6.0
 offset_bottom = 78.0
 
 [node name="Green" type="ColorRect" parent="Box"]
 offset_left = 6.0
 offset_top = 6.0
-offset_right = 26.0
+offset_right = 6.0
 offset_bottom = 78.0
 
 [node name="Yellow" type="ColorRect" parent="Box"]
 offset_left = 6.0
 offset_top = 6.0
-offset_right = 36.0
+offset_right = 6.0
 offset_bottom = 78.0
 
 [node name="Red" type="ColorRect" parent="Box"]
 offset_left = 6.0
 offset_top = 6.0
-offset_right = 46.0
+offset_right = 6.0
 offset_bottom = 78.0
 
-[node name="HowToSubmit" type="Label" parent="Box"]
+[node name="HowToVote" type="Label" parent="Box"]
 offset_left = 5.0
 offset_top = -115.0
 offset_right = 1715.0
 offset_bottom = -23.0
-text = "Hlasovat můžete pomocí chatu. Stačí napsat číslo odpovědi do zprávy. Například pokud chci zvolit možnost 1, napíšu do zprávy pouze číslo 1. Pokud bude ve zprávě jakýkoliv jiný znak, bude se počítat za neplatnou."
+text = "Hlasovat můžete pomocí chatu. Stačí napsat číslo odpovědi do zprávy. Například pokud chci zvolit možnost 1, napíšu do zprávy pouze číslo 1. Pokud bude ve zprávě jakýkoliv jiný znak, odpověď se nezapočítá."
 label_settings = SubResource("LabelSettings_e6f3a")
+vertical_alignment = 2
 autowrap_mode = 3
 
 [node name="Question" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
 
 [node name="Question" type="Label" parent="Question"]
 offset_left = 60.0
@@ -115,6 +118,7 @@ vertical_alignment = 2
 autowrap_mode = 3
 
 [node name="Answers" type="Node2D" parent="."]
+modulate = Color(1, 1, 1, 0)
 
 [node name="Answer 1" type="Label" parent="Answers"]
 offset_left = 65.0
@@ -158,7 +162,7 @@ position = Vector2i(2222, 200)
 size = Vector2i(445, 530)
 unresizable = true
 
-[node name="Controller" type="Node2D" parent="Window" node_paths=PackedStringArray("TopLeft", "BottomRight", "Red", "Yellow", "Green", "Blue", "ResetButton", "YoutubeStreamId", "Window", "Timer", "ChatHistory", "ClearVotesButton", "PrevQuestionButton", "NextQuestionButton", "FinishQuestionButton", "EditQuestionsButton", "Question", "Answers", "Box")]
+[node name="Controller" type="Node2D" parent="Window" node_paths=PackedStringArray("TopLeft", "BottomRight", "Red", "Yellow", "Green", "Blue", "ResetButton", "YoutubeStreamId", "Window", "Timer", "ChatHistory", "HowToVote", "Question", "A1", "A2", "A3", "A4", "ClearVotesButton", "PrevQuestionButton", "NextQuestionButton", "FinishQuestionButton", "Test", "EditQuestionsButton", "QuestionBox", "Answers", "Box")]
 position = Vector2(2228, 208)
 script = ExtResource("4_f3dao")
 TopLeft = NodePath("../../Box/TopLeftCorner")
@@ -172,12 +176,19 @@ YoutubeStreamId = NodePath("../LineEdit")
 Window = NodePath("..")
 Timer = NodePath("../../Timer")
 ChatHistory = NodePath("../Chat")
+HowToVote = NodePath("../../Box/HowToVote")
+Question = NodePath("../../Question/Question")
+A1 = NodePath("../../Answers/Answer 1")
+A2 = NodePath("../../Answers/Answer 2")
+A3 = NodePath("../../Answers/Answer 3")
+A4 = NodePath("../../Answers/Answer 4")
 ClearVotesButton = NodePath("../ClearVotes")
 PrevQuestionButton = NodePath("../PreviousQuestion")
 NextQuestionButton = NodePath("../NextQuestion")
 FinishQuestionButton = NodePath("../Finish")
+Test = NodePath("../Test")
 EditQuestionsButton = NodePath("../Edit")
-Question = NodePath("../../Question")
+QuestionBox = NodePath("../../Question")
 Answers = NodePath("../../Answers")
 Box = NodePath("../../Box")
 
@@ -251,5 +262,13 @@ text = "[b]IToncek[/b] >> There is no stream setup yet!"
 scroll_active = false
 scroll_following = true
 threaded = true
+
+[node name="Test" type="Button" parent="Window"]
+visible = false
+offset_left = 15.0
+offset_top = 470.0
+offset_right = 95.0
+offset_bottom = 515.0
+text = "Test"
 
 [node name="Timer" type="Timer" parent="."]
