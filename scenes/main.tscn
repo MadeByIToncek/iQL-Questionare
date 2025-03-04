@@ -1,9 +1,9 @@
 [gd_scene load_steps=11 format=3 uid="uid://tqasku2rde7b"]
 
-[ext_resource type="Script" path="res://scripts/TransparencyController.cs" id="1_mc4aq"]
+[ext_resource type="Script" uid="uid://brtwvlrg5qava" path="res://scripts/TransparencyController.cs" id="1_mc4aq"]
 [ext_resource type="FontFile" uid="uid://d0wjqek7sxig1" path="res://fonts/Purista - normal.ttf" id="2_4ebgf"]
 [ext_resource type="FontFile" uid="uid://ciq1dr8rktyv5" path="res://fonts/Purista - bold.ttf" id="3_jr6ma"]
-[ext_resource type="Script" path="res://scripts/Controller.cs" id="4_f3dao"]
+[ext_resource type="Script" uid="uid://cxlgwl4c4vacp" path="res://scripts/Controller.cs" id="4_f3dao"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_e6f3a"]
 font = ExtResource("2_4ebgf")

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cet6jhxrdm6ai"]
 
-[ext_resource type="Script" path="res://scripts/EditorController.cs" id="1_rox8r"]
+[ext_resource type="Script" uid="uid://bcydwuqvmhvnu" path="res://scripts/EditorController.cs" id="1_rox8r"]
 [ext_resource type="FontFile" uid="uid://ciq1dr8rktyv5" path="res://fonts/Purista - bold.ttf" id="2_54qas"]
 [ext_resource type="FontFile" uid="uid://d0wjqek7sxig1" path="res://fonts/Purista - normal.ttf" id="3_o5a8s"]
 
