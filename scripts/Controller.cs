@@ -146,8 +146,12 @@ public partial class Controller : Node2D {
 		Tween tween = GetTree()
 			.CreateTween()
 			.SetParallel();
-
-
+		
+		tween.TweenProperty(A1, "modulate", _correctAnswer == 1 ? _redColor : _redGrayColor, .3);
+		tween.TweenProperty(A2, "modulate", _correctAnswer == 2 ? _yellowColor : _yellowGrayColor, .3);
+		tween.TweenProperty(A3, "modulate", _correctAnswer == 3 ? _greenColor : _greenGrayColor, .3);
+		tween.TweenProperty(A4, "modulate", _correctAnswer == 4 ? _blueColor : _blueGrayColor, .3);
+		
 		tween.TweenProperty(Red, "modulate", _correctAnswer == 1 ? _redColor : _redGrayColor, .3);
 		tween.TweenProperty(Yellow, "modulate", _correctAnswer == 2 ? _yellowColor : _yellowGrayColor, .3);
 		tween.TweenProperty(Green, "modulate", _correctAnswer == 3 ? _greenColor : _greenGrayColor, .3);
@@ -184,6 +188,8 @@ public partial class Controller : Node2D {
 
 	private void SwitchToNewQuestion() {
 		SetAllUiUsability(false);
+		_isShowingAnswer = false;
+		_isSuppressed = true;
 
 		Tween fadeout = GetTree().CreateTween()
 			.SetParallel();
@@ -206,7 +212,12 @@ public partial class Controller : Node2D {
 						fadeInTheRest.TweenInterval(.5);
 						fadeInTheRest.TweenProperty(Box, "modulate", new Color(1, 1, 1, 1), 1.5);
 
-						fadeInTheRest.Finished += () => { SetAllUiUsability(true); };
+						fadeInTheRest.Finished += () => {
+							_isShowingAnswer = false;
+							_isSuppressed = false;
+							ClearVotes();
+							SetAllUiUsability(true);
+						};
 						fadeInTheRest.Play();
 					};
 				};
@@ -221,6 +232,11 @@ public partial class Controller : Node2D {
 		Yellow.Modulate = _yellowColor;
 		Green.Modulate = _greenColor;
 		Blue.Modulate = _blueColor;
+		
+		A1.Modulate = _redColor;
+		A2.Modulate = _yellowColor;
+		A3.Modulate = _greenColor;
+		A4.Modulate = _blueColor;
 	}
 
 	private void SwapQuestion() {

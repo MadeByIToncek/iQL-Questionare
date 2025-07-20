@@ -21,17 +21,14 @@ font_color = Color(1, 0.133333, 0, 1)
 [sub_resource type="LabelSettings" id="LabelSettings_1pljd"]
 font = ExtResource("2_4ebgf")
 font_size = 64
-font_color = Color(1, 0.8, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_7ie2s"]
 font = ExtResource("2_4ebgf")
 font_size = 64
-font_color = Color(0.266667, 1, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_hgphj"]
 font = ExtResource("2_4ebgf")
 font_size = 64
-font_color = Color(0, 0.6, 1, 1)
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_mc4aq")
@@ -43,7 +40,6 @@ offset_bottom = 1080.0
 color = Color(0, 0, 0, 1)
 
 [node name="Box" type="Node2D" parent="."]
-modulate = Color(1, 1, 1, 0)
 position = Vector2(60, 942)
 
 [node name="Top" type="ColorRect" parent="Box"]
@@ -96,10 +92,10 @@ offset_bottom = 78.0
 
 [node name="HowToVote" type="Label" parent="Box"]
 offset_left = 5.0
-offset_top = -115.0
-offset_right = 1715.0
-offset_bottom = -23.0
-text = "Hlasovat můžete pomocí chatu. Stačí napsat číslo odpovědi do zprávy. Například pokud chci zvolit možnost 1, napíšu do zprávy pouze číslo 1. Pokud bude ve zprávě jakýkoliv jiný znak, odpověď se nezapočítá."
+offset_top = -148.0
+offset_right = 1698.0
+offset_bottom = -19.0
+text = "Hlasovat můžete pomocí chatu. Stačí napsat číslo odpovědi do zprávy. Například pokud chci zvolit možnost 1, napíšu do zprávy pouze číslo 1. Pokud bude ve zprávě jakýkoliv jiný znak, odpověď se nezapočítá. Odesláním nové zprávy před ukončením hlasování svoji původní volbu přepíšete. Odpovědi nejsou soukromé!"
 label_settings = SubResource("LabelSettings_e6f3a")
 vertical_alignment = 2
 autowrap_mode = 3
@@ -121,6 +117,7 @@ autowrap_mode = 3
 modulate = Color(1, 1, 1, 0)
 
 [node name="Answer 1" type="Label" parent="Answers"]
+modulate = Color(1, 0.133333, 0, 1)
 offset_left = 65.0
 offset_top = 230.0
 offset_right = 1765.0
@@ -130,6 +127,7 @@ label_settings = SubResource("LabelSettings_rhxad")
 autowrap_mode = 3
 
 [node name="Answer 2" type="Label" parent="Answers"]
+modulate = Color(1, 0.8, 0, 1)
 offset_left = 65.0
 offset_top = 318.0
 offset_right = 1765.0
@@ -139,6 +137,7 @@ label_settings = SubResource("LabelSettings_1pljd")
 autowrap_mode = 3
 
 [node name="Answer 3" type="Label" parent="Answers"]
+modulate = Color(0.266667, 1, 0, 1)
 offset_left = 65.0
 offset_top = 405.0
 offset_right = 1765.0
@@ -148,6 +147,7 @@ label_settings = SubResource("LabelSettings_7ie2s")
 autowrap_mode = 3
 
 [node name="Answer 4" type="Label" parent="Answers"]
+modulate = Color(0, 0.6, 1, 1)
 offset_left = 65.0
 offset_top = 490.0
 offset_right = 1765.0
