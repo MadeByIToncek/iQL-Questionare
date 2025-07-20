@@ -13,6 +13,7 @@ config_version=5
 config/name="Questionare"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
+run/max_fps=50
 boot_splash/bg_color=Color(0, 0, 0, 0)
 boot_splash/image="uid://coa406rt8dee1"
 config/icon="uid://cfbhyeqsmvylk"
@@ -28,6 +29,7 @@ window/size/resizable=false
 window/size/transparent=true
 window/subwindows/embed_subwindows=false
 window/per_pixel_transparency/allowed=true
+window/vsync/vsync_mode=0
 
 [dotnet]
 
@@ -37,4 +39,5 @@ project/assembly_name="Questionare"
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+environment/defaults/default_clear_color=Color(0.0715129, 0.0796639, 0.0963542, 1)
 viewport/transparent_background=true
