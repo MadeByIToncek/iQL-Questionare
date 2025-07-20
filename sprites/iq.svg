@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 681 681" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g id="Artboard1" transform="matrix(0.982725,0,0,1.02571,0,0)">
+        <rect x="0" y="0" width="692" height="663" style="fill:none;"/>
+        <clipPath id="_clip1">
+            <rect x="0" y="0" width="692" height="663"/>
+        </clipPath>
+        <g clip-path="url(#_clip1)">
+            <g transform="matrix(0.868648,0,0,0.836447,-43.848,-3159.26)">
+                <g id="iq">
+                    <rect x="33.364" y="3777" width="830.467" height="791.612" style="fill:none;"/>
+                    <g>
+                        <g transform="matrix(59.5872,0,0,59.2879,-34470.5,-23279)">
+                            <rect x="579.055" y="456.35" width="13.937" height="13.352" style="fill:rgb(0,160,222);"/>
+                        </g>
+                        <g transform="matrix(59.5872,0,0,59.2879,635.343,4128.34)">
+                            <path d="M0,2.626C0,3.006 -0.228,3.223 -0.597,3.223L-2.68,3.223C-3.049,3.223 -3.277,3.006 -3.277,2.626L-3.277,-1.519C-3.277,-1.898 -3.049,-2.126 -2.68,-2.126L-0.597,-2.126C-0.228,-2.126 0,-1.898 0,-1.519L0,2.626ZM-2.279,5.87L-0.987,5.87L-0.987,4.351L-0.369,4.351C0.618,4.351 1.291,3.679 1.291,2.691L1.291,-1.584C1.291,-2.582 0.618,-3.244 -0.369,-3.244L-2.919,-3.244C-3.896,-3.244 -4.568,-2.582 -4.568,-1.584L-4.568,2.691C-4.568,3.679 -3.896,4.351 -2.919,4.351L-2.279,4.351L-2.279,5.87Z" style="fill:white;fill-rule:nonzero;"/>
+                        </g>
+                        <g transform="matrix(59.5872,0,0,59.2879,-34470.5,-23317.8)">
+                            <path d="M581.967,460.825L583.171,460.825L583.171,459.425L581.967,459.425L581.967,460.825ZM581.967,467.281L583.171,467.281L583.171,461.639L581.967,461.639L581.967,467.281Z" style="fill:white;fill-rule:nonzero;"/>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

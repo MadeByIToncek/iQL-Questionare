@@ -13,7 +13,10 @@ config_version=5
 config/name="Questionare"
 run/main_scene="res://scenes/main.tscn"
 config/features=PackedStringArray("4.4", "C#", "Forward Plus")
-config/icon="res://sprites/icon.svg"
+boot_splash/bg_color=Color(0, 0, 0, 0)
+boot_splash/image="uid://coa406rt8dee1"
+config/icon="uid://cfbhyeqsmvylk"
+boot_splash/minimum_display_time=3000
 
 [display]
 
