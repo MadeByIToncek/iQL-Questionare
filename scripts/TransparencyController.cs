@@ -1,6 +1,6 @@
 using Godot;
 
-namespace Questionare;
+namespace Questionare.scripts;
 
 public partial class TransparencyController : Node2D
 {

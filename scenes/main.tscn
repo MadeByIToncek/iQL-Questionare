@@ -1,6 +1,5 @@
 [gd_scene load_steps=11 format=3 uid="uid://tqasku2rde7b"]
 
-[ext_resource type="Script" uid="uid://brtwvlrg5qava" path="res://scripts/TransparencyController.cs" id="1_mc4aq"]
 [ext_resource type="FontFile" uid="uid://d0wjqek7sxig1" path="res://fonts/Purista - normal.ttf" id="2_4ebgf"]
 [ext_resource type="FontFile" uid="uid://ciq1dr8rktyv5" path="res://fonts/Purista - bold.ttf" id="3_jr6ma"]
 [ext_resource type="Script" uid="uid://cxlgwl4c4vacp" path="res://scripts/Controller.cs" id="4_f3dao"]
@@ -8,6 +7,10 @@
 [sub_resource type="LabelSettings" id="LabelSettings_e6f3a"]
 font = ExtResource("2_4ebgf")
 font_size = 34
+
+[sub_resource type="LabelSettings" id="LabelSettings_jyhfs"]
+font = ExtResource("2_4ebgf")
+font_size = 40
 
 [sub_resource type="LabelSettings" id="LabelSettings_cp6ml"]
 font = ExtResource("3_jr6ma")
@@ -30,7 +33,6 @@ font = ExtResource("2_4ebgf")
 font_size = 64
 
 [node name="Main" type="Node2D"]
-script = ExtResource("1_mc4aq")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 visible = false
@@ -39,7 +41,7 @@ offset_bottom = 1080.0
 color = Color(0, 0, 0, 1)
 
 [node name="Box" type="Node2D" parent="."]
-modulate = Color(1, 1, 1, 0)
+modulate = Color(0, 0, 0, 0)
 position = Vector2(60, 942)
 
 [node name="Top" type="ColorRect" parent="Box"]
@@ -98,6 +100,54 @@ offset_bottom = -19.0
 text = "Hlasovat můžete pomocí chatu. Stačí napsat číslo odpovědi do zprávy. Například pokud chci zvolit možnost 1, napíšu do zprávy pouze číslo 1. Pokud bude ve zprávě jakýkoliv jiný znak, odpověď se nezapočítá. Odesláním nové zprávy před ukončením hlasování svoji původní volbu přepíšete. Odpovědi nejsou soukromé!"
 label_settings = SubResource("LabelSettings_e6f3a")
 vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="Percent 1" type="Label" parent="Box"]
+modulate = Color(0, 0, 0, 0)
+offset_left = 23.0
+offset_top = 16.0
+offset_right = 123.0
+offset_bottom = 66.0
+text = "0%"
+label_settings = SubResource("LabelSettings_jyhfs")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Percent 2" type="Label" parent="Box"]
+modulate = Color(0, 0, 0, 0)
+offset_left = 326.0
+offset_top = 16.0
+offset_right = 426.0
+offset_bottom = 66.0
+text = "0%"
+label_settings = SubResource("LabelSettings_jyhfs")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Percent 3" type="Label" parent="Box"]
+modulate = Color(0, 0, 0, 0)
+offset_left = 1073.0
+offset_top = 16.0
+offset_right = 1173.0
+offset_bottom = 66.0
+text = "0%"
+label_settings = SubResource("LabelSettings_jyhfs")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Percent 4" type="Label" parent="Box"]
+modulate = Color(0, 0, 0, 0)
+offset_left = 1563.0
+offset_top = 16.0
+offset_right = 1663.0
+offset_bottom = 66.0
+text = "0%"
+label_settings = SubResource("LabelSettings_jyhfs")
+horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 3
 
 [node name="Question" type="Node2D" parent="."]
@@ -159,10 +209,10 @@ autowrap_mode = 2
 [node name="Window" type="Window" parent="."]
 title = "Configuration window"
 position = Vector2i(2222, 200)
-size = Vector2i(445, 530)
+size = Vector2i(445, 700)
 unresizable = true
 
-[node name="Controller" type="Node2D" parent="Window" node_paths=PackedStringArray("TopLeft", "BottomRight", "Red", "Yellow", "Green", "Blue", "ResetButton", "YoutubeStreamId", "Window", "Timer", "ChatHistory", "HowToVote", "Question", "A1", "A2", "A3", "A4", "ClearVotesButton", "PrevQuestionButton", "NextQuestionButton", "FinishQuestionButton", "Test", "EditQuestionsButton", "QuestionBox", "Answers", "Box")]
+[node name="Controller" type="Node2D" parent="Window" node_paths=PackedStringArray("TopLeft", "BottomRight", "Red", "Yellow", "Green", "Blue", "ResetButton", "YoutubeStreamId", "Window", "Timer", "ChatHistory", "HowToVote", "Question", "A1", "A2", "A3", "A4", "P1", "P2", "P3", "P4", "ClearVotesButton", "PrevQuestionButton", "NextQuestionButton", "FinishQuestionButton", "Test", "EditQuestionsButton", "QuestionBox", "Answers", "Box")]
 position = Vector2(2228, 208)
 script = ExtResource("4_f3dao")
 TopLeft = NodePath("../../Box/TopLeftCorner")
@@ -182,6 +232,10 @@ A1 = NodePath("../../Answers/Answer 1")
 A2 = NodePath("../../Answers/Answer 2")
 A3 = NodePath("../../Answers/Answer 3")
 A4 = NodePath("../../Answers/Answer 4")
+P1 = NodePath("../../Box/Percent 1")
+P2 = NodePath("../../Box/Percent 2")
+P3 = NodePath("../../Box/Percent 3")
+P4 = NodePath("../../Box/Percent 4")
 ClearVotesButton = NodePath("../ClearVotes")
 PrevQuestionButton = NodePath("../PreviousQuestion")
 NextQuestionButton = NodePath("../NextQuestion")
@@ -245,8 +299,8 @@ text = "Edit questions"
 [node name="Chat" type="RichTextLabel" parent="Window"]
 offset_left = 30.0
 offset_top = 210.0
-offset_right = 419.56
-offset_bottom = 510.0
+offset_right = 420.0
+offset_bottom = 681.0
 theme_override_fonts/normal_font = ExtResource("2_4ebgf")
 theme_override_fonts/mono_font = ExtResource("2_4ebgf")
 theme_override_fonts/italics_font = ExtResource("2_4ebgf")

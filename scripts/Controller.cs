@@ -1,3 +1,5 @@
+//#define DEBUG_OPTIONS
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -5,11 +7,10 @@ using CSharpChatReceiver;
 using CSharpChatReceiver.records;
 using Godot;
 using Newtonsoft.Json;
-using Questionare.scripts;
 using ErrorEventArgs = CSharpChatReceiver.ErrorEventArgs;
-using PieChart = Questionare.scripts.PieChart;
+using Vector2 = Godot.Vector2;
 
-namespace Questionare;
+namespace Questionare.scripts;
 
 public partial class Controller : Node2D {
 	[Export] public Node2D TopLeft;
@@ -29,6 +30,10 @@ public partial class Controller : Node2D {
 	[Export] public Label A2;
 	[Export] public Label A3;
 	[Export] public Label A4;
+	[Export] public Label P1;
+	[Export] public Label P2;
+	[Export] public Label P3;
+	[Export] public Label P4;
 
 	[Export] public Button ClearVotesButton;
 	[Export] public Button PrevQuestionButton;
@@ -42,7 +47,7 @@ public partial class Controller : Node2D {
 	[Export] public Node2D Box;
 
 	private readonly List<ChatItem> _messages = new(64);
-	private readonly Dictionary<string,int> _votes = new(64);
+	private readonly Dictionary<string, int> _votes = new(64);
 
 	private List<Question> _questions;
 	private int _questionPtr;
@@ -60,12 +65,13 @@ public partial class Controller : Node2D {
 			GetTree().ChangeSceneToFile("res://scenes/editor.tscn");
 			return;
 		}
+
 		using StreamReader r = new("q.json");
 		string json = r.ReadToEnd();
 		r.Close();
 		_questions = JsonConvert.DeserializeObject<List<Question>>(json);
-		
-		
+
+
 		Timer.Timeout += () => { _chatReceiver?.Execute(); };
 		ResetButton.Pressed += ResetSystem;
 		ClearVotesButton.Pressed += ClearVotes;
@@ -74,6 +80,7 @@ public partial class Controller : Node2D {
 				if (!_isSuppressed) {
 					_questionPtr--;
 				}
+
 				_isSuppressed = false;
 
 				SwitchToNewQuestion();
@@ -84,10 +91,11 @@ public partial class Controller : Node2D {
 
 		};
 		NextQuestionButton.Pressed += () => {
-			if (_questionPtr < _questions.Count-1) {
+			if (_questionPtr < _questions.Count - 1) {
 				if (!_isSuppressed) {
 					_questionPtr++;
 				}
+
 				_isSuppressed = false;
 
 				SwitchToNewQuestion();
@@ -98,9 +106,7 @@ public partial class Controller : Node2D {
 
 		};
 		FinishQuestionButton.Pressed += FinishQuestion;
-		EditQuestionsButton.Pressed += () => {
-			GetTree().ChangeSceneToFile("res://scenes/editor.tscn");
-		};
+		EditQuestionsButton.Pressed += () => { GetTree().ChangeSceneToFile("res://scenes/editor.tscn"); };
 
 		Test.Pressed += () => {
 			int answer = 0;
@@ -118,14 +124,22 @@ public partial class Controller : Node2D {
 					answer = 4;
 					break;
 			}
-			
-			_votes.Add("test"+Random.Shared.Next(0, 10), answer);
+
+			_votes.Add("test" + Random.Shared.Next(0, 1_000_000), answer);
 			UpdateRatios();
 		};
-		
+
+		#if !DEBUG_OPTIONS
 		ClearVotes();
 		ClearScreen();
+		#endif
+		
 		ResetColors();
+		
+		#if DEBUG_OPTIONS
+		UpdateRatios();
+		#endif
+		
 		SetAllUiUsability(true);
 	}
 
@@ -147,12 +161,12 @@ public partial class Controller : Node2D {
 		Tween tween = GetTree()
 			.CreateTween()
 			.SetParallel();
-		
+
 		tween.TweenProperty(A1, "modulate", _correctAnswer == 1 ? _redColor : _redGrayColor, .3);
 		tween.TweenProperty(A2, "modulate", _correctAnswer == 2 ? _yellowColor : _yellowGrayColor, .3);
 		tween.TweenProperty(A3, "modulate", _correctAnswer == 3 ? _greenColor : _greenGrayColor, .3);
 		tween.TweenProperty(A4, "modulate", _correctAnswer == 4 ? _blueColor : _blueGrayColor, .3);
-		
+
 		tween.TweenProperty(Red, "modulate", _correctAnswer == 1 ? _redColor : _redGrayColor, .3);
 		tween.TweenProperty(Yellow, "modulate", _correctAnswer == 2 ? _yellowColor : _yellowGrayColor, .3);
 		tween.TweenProperty(Green, "modulate", _correctAnswer == 3 ? _greenColor : _greenGrayColor, .3);
@@ -205,13 +219,13 @@ public partial class Controller : Node2D {
 			GetTree().CreateTimer(.75).Timeout += () => {
 				Tween fadeinTitle = GetTree().CreateTween()
 					.SetParallel();
-				fadeinTitle.TweenProperty(QuestionBox, "modulate", new Color(1, 1, 1, 1), .5);
+				fadeinTitle.TweenProperty(QuestionBox, "modulate", new Color(1, 1, 1), .5);
 				fadeinTitle.Finished += () => {
 					GetTree().CreateTimer(2).Timeout += () => {
 						Tween fadeInTheRest = GetTree().CreateTween();
-						fadeInTheRest.TweenProperty(Answers, "modulate", new Color(1, 1, 1, 1), .5);
+						fadeInTheRest.TweenProperty(Answers, "modulate", new Color(1, 1, 1), .5);
 						fadeInTheRest.TweenInterval(.5);
-						fadeInTheRest.TweenProperty(Box, "modulate", new Color(1, 1, 1, 1), 1.5);
+						fadeInTheRest.TweenProperty(Box, "modulate", new Color(1, 1, 1), 1.5);
 
 						fadeInTheRest.Finished += () => {
 							_isShowingAnswer = false;
@@ -233,7 +247,7 @@ public partial class Controller : Node2D {
 		Yellow.Modulate = _yellowColor;
 		Green.Modulate = _greenColor;
 		Blue.Modulate = _blueColor;
-		
+
 		A1.Modulate = _redColor;
 		A2.Modulate = _yellowColor;
 		A3.Modulate = _greenColor;
@@ -242,13 +256,13 @@ public partial class Controller : Node2D {
 
 	private void SwapQuestion() {
 		Question q = _questions[_questionPtr];
-		
+
 		Question.SetText(q.Q);
-		A1.SetText("1) "+q.A1);
-		A2.SetText("2) "+q.A2);
-		A3.SetText("3) "+q.A3);
-		A4.SetText("4) "+q.A4);
-		
+		A1.SetText("1) " + q.A1);
+		A2.SetText("2) " + q.A2);
+		A3.SetText("3) " + q.A3);
+		A4.SetText("4) " + q.A4);
+
 		_correctAnswer = q.Correct;
 	}
 
@@ -302,7 +316,8 @@ public partial class Controller : Node2D {
 							_ => -1
 						};
 						_votes[args.Item.ChatAuthor.Name] = vote;
-					} else GD.Print("Mist");
+					}
+					// else GD.Print("Mist");
 				}
 
 				UpdateRatios();
@@ -337,16 +352,20 @@ public partial class Controller : Node2D {
 					break;
 			}
 		}
-		
+
+		#if DEBUG_OPTIONS
+		red = 1;
+		yellow = 1;
+		green = 1;
+		blue = 1;
+		count = red + yellow + green + blue;
+		#endif
+
 		float redratio = (float)red / count,
 			yellowratio = (float)yellow / count,
 			greenratio = (float)green / count,
 			blueratio = (float)blue / count;
 
-		// redratio = .25f;
-		// yellowratio = .25f;
-		// greenratio = .25f;
-		// blueratio = .25f;
 
 		if (count == 0) {
 			redratio = 0;
@@ -372,12 +391,49 @@ public partial class Controller : Node2D {
 			.SetParallel()
 			.SetEase(Tween.EaseType.Out)
 			.SetTrans(Tween.TransitionType.Expo);
+
+
 		trans.TweenProperty(Red, "size", redsiz, .8);
 		trans.TweenProperty(Yellow, "size", ylwsiz, .8);
 		trans.TweenProperty(Green, "size", grnsiz, .8);
 		trans.TweenProperty(Blue, "size", blusiz, .8);
 
+		float offset = 40f;
+		if (red > 0 && redratio >= 0.05) {
+			string ratio = $"{MathF.Round(redratio * 100)}%";
+			trans.TweenProperty(P1, "modulate", new Color(0, 0, 0), .4);
+			trans.TweenProperty(P1, "text", ratio, .8);
+			trans.TweenProperty(P1, "position", new Vector2(redsiz.X / 2 - offset, 16), .8);
+		}
+		else {
+			trans.TweenProperty(P1, "modulate", new Color(0, 0, 0, 0), .4);
+		}
+
+		ProcessRatios(red, redratio, trans, redsiz, Vector2.Zero, offset, P1);
+		ProcessRatios(yellow, yellowratio, trans, ylwsiz, redsiz, offset, P2);
+		ProcessRatios(green, greenratio, trans, grnsiz, ylwsiz, offset, P3);
+		ProcessRatios(blue, blueratio, trans, blusiz, grnsiz, offset, P4);
+
 		trans.Play();
+	}
+
+	private void ProcessRatios(int count,
+		float colorRatio,
+		Tween tween,
+		Vector2 size,
+		Vector2 previousBarSize,
+		float offsetValue,
+		Label label) {
+		if (count > 0 && colorRatio >= 0.05) {
+			string ratio = $"{MathF.Round(colorRatio * 100)}%";
+			tween.TweenProperty(label, "modulate", new Color(0, 0, 0), .4);
+			tween.TweenProperty(label, "text", ratio, .8);
+			tween.TweenProperty(label, "position", new Vector2((size.X + previousBarSize.X) / 2f - offsetValue, 16),
+				.8);
+		}
+		else {
+			tween.TweenProperty(label, "modulate", new Color(0, 0, 0, 0), .4);
+		}
 	}
 
 	private void UpdateChatDisplay() {
@@ -391,4 +447,9 @@ public partial class Controller : Node2D {
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta) { }
+
+
+	public static float GetStringLength(string str, LabelSettings ls) {
+		return ls.Font.GetStringSize(str, fontSize: ls.FontSize).X;
+	}
 }
