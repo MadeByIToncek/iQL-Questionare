@@ -17,7 +17,7 @@ run/max_fps=50
 boot_splash/bg_color=Color(0, 0, 0, 0)
 boot_splash/image="uid://coa406rt8dee1"
 config/icon="uid://cfbhyeqsmvylk"
-boot_splash/minimum_display_time=3000
+boot_splash/minimum_display_time=5000
 
 [display]
 
