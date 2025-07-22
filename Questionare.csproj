@@ -10,6 +10,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Remove="GodotSharpEditor" />
+    <PackageReference Remove="Godot.SourceGenerators" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="scenes\" />

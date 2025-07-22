@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using CSharpChatReceiver;
 using CSharpChatReceiver.records;
 using Godot;
@@ -172,6 +173,19 @@ public partial class Controller : Node2D {
 		tween.TweenProperty(Green, "modulate", _correctAnswer == 3 ? _greenColor : _greenGrayColor, .3);
 		tween.TweenProperty(Blue, "modulate", _correctAnswer == 4 ? _blueColor : _blueGrayColor, .3);
 
+
+		int red = _votes.Count(x => x.Value.Equals(1));
+		int yellow = _votes.Count(x => x.Value.Equals(2));
+		int green = _votes.Count(x => x.Value.Equals(3));
+		int blue = _votes.Count(x => x.Value.Equals(4));
+		
+		Question q = _questions[_questionPtr];
+		
+		tween.TweenProperty(A1, "text", "1) " + q.A1.Trim() + " - " + red + " hlasů", .8);
+		tween.TweenProperty(A2, "text", "2) " + q.A2.Trim() + " - " + yellow + " hlasů", .8);
+		tween.TweenProperty(A3, "text", "3) " + q.A3.Trim() + " - " + green + " hlasů", .8);
+		tween.TweenProperty(A4, "text", "4) " + q.A4.Trim() + " - " + blue + " hlasů", .8);
+
 		tween.Finished += () => { SetAllUiUsability(true); };
 
 		tween.Play();
@@ -257,11 +271,11 @@ public partial class Controller : Node2D {
 	private void SwapQuestion() {
 		Question q = _questions[_questionPtr];
 
-		Question.SetText(q.Q);
-		A1.SetText("1) " + q.A1);
-		A2.SetText("2) " + q.A2);
-		A3.SetText("3) " + q.A3);
-		A4.SetText("4) " + q.A4);
+		Question.SetText(q.Q.Trim());
+		A1.SetText("1) " + q.A1.Trim());
+		A2.SetText("2) " + q.A2.Trim());
+		A3.SetText("3) " + q.A3.Trim());
+		A4.SetText("4) " + q.A4.Trim());
 
 		_correctAnswer = q.Correct;
 	}
@@ -330,28 +344,11 @@ public partial class Controller : Node2D {
 	}
 
 	private void UpdateRatios() {
-		int red = 0, yellow = 0, green = 0, blue = 0, count = 0;
-		
-		foreach ((string _, int vote) in _votes) {
-			switch (vote) {
-				case 1:
-					red++;
-					count++;
-					break;
-				case 2:
-					yellow++;
-					count++;
-					break;
-				case 3:
-					green++;
-					count++;
-					break;
-				case 4:
-					blue++;
-					count++;
-					break;
-			}
-		}
+		int red = _votes.Count(x => x.Value.Equals(1));
+		int yellow = _votes.Count(x => x.Value.Equals(2));
+		int green = _votes.Count(x => x.Value.Equals(3));
+		int blue = _votes.Count(x => x.Value.Equals(4));
+		int count = _votes.Count(x => x.Value.Equals(1) || x.Value.Equals(2) || x.Value.Equals(3) || x.Value.Equals(4));
 
 		#if DEBUG_OPTIONS
 		red = 1;
@@ -449,7 +446,7 @@ public partial class Controller : Node2D {
 	public override void _Process(double delta) { }
 
 
-	public static float GetStringLength(string str, LabelSettings ls) {
+	private static float GetStringLength(string str, LabelSettings ls) {
 		return ls.Font.GetStringSize(str, fontSize: ls.FontSize).X;
 	}
 }

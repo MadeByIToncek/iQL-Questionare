@@ -38,5 +38,6 @@ project/assembly_name="Questionare"
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
+textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.0715129, 0.0796639, 0.0963542, 1)
 viewport/transparent_background=true
