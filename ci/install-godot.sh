@@ -1,7 +1,8 @@
 #!/bin/bash
 
+sudo apt-get install jq unzip -y
+
 if [ ! -d /tmp/engine-godot ]; then
-    sudo apt-get install jq unzip -y
 
     curl https://api.github.com/repos/godotengine/godot/releases/latest > /tmp/engine-ver
 
@@ -14,13 +15,12 @@ if [ ! -d /tmp/engine-godot ]; then
     unzip /tmp/godot.zip
     mv /tmp/Godot_* /tmp/engine-godot
     mv /tmp/engine-godot/Godot_* /tmp/engine-godot/godot
-    
+
     rm /tmp/engine-ver
     rm /tmp/godot.zip
 fi
 
 if [ ! -d /tmp/templates ]; then
-    sudo apt-get install jq unzip -y
 
     curl https://api.github.com/repos/godotengine/godot/releases/latest > /tmp/templates-ver
 
@@ -31,6 +31,9 @@ if [ ! -d /tmp/templates ]; then
     echo "$url"|xargs wget -q -O "templates.tpz" -c {}
 
     unzip /tmp/templates.tpz
+    
+    rm /tmp/templates-ver
+    rm /tmp/templates.tpz
 fi
 
 exit 0
