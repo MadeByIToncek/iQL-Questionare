@@ -1,0 +1,42 @@
+﻿name: godot.yml
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*.*.*.*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    branches:
+      - 'ci'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Cache Godot Engine Stuff
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ runner.temp }}/engine-godot
+            ${{ runner.temp }}/templates.tpz
+          key: ${{ runner.os }}-godot
+          
+      - name: Install Godot Engine and Templates
+        run: bash ./ci/install-godot.sh
+        
+      - name: Build Executables
+        run: ${{ runner.temp }}/engine-godot/godot --headless --export-release "Windows Desktop CI" /home/runner/work/iQL-Questionare/iQL-Questionare/build/Questionare.exe
+      
+      - name: Package Executables
+        run: bash ./ci/package-files.sh
+        
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: |
+            ./results/questionare.zip
+            ./results/questionare.7z
