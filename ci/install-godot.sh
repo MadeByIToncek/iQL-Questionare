@@ -34,13 +34,11 @@ if [ ! -d $RUNNER_TEMP/templates ]; then
     
     mkdir -p /home/runner/.local/share/godot/export_templates/4.4.1.stable.mono/
     mv $RUNNER_TEMP/templates/* /home/runner/.local/share/godot/export_templates/4.4.1.stable.mono/
-    
-    ls /home/runner/.local/share/godot/export_templates/4.4.1.stable.mono/
 
     rm $RUNNER_TEMP/templates-ver
     rm $RUNNER_TEMP/templates.tpz
 fi
 
-mkdir build
+mkdir /home/runner/work/iQL-Questionare/iQL-Questionare/build
 
 exit 0
