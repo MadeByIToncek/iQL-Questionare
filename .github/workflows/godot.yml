@@ -27,3 +27,6 @@ jobs:
             /tmp/engine-godot
             /tmp/templates.tpz
           key: ${{ runner.os }}-primes
+          
+      - name: Install Godot Engine and Templates
+        run: bash ./ci/install-godot.sh
