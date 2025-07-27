@@ -31,7 +31,7 @@ if [ ! -d $RUNNER_TEMP/templates ]; then
     echo "$url"|xargs wget -q -O "templates.tpz" -c {}
 
     unzip $RUNNER_TEMP/templates.tpz
-    mkdir /home/runner/.local/share/godot/export_templates/4.4.1.stable.mono/
+    mkdir -p /home/runner/.local/share/godot/export_templates/4.4.1.stable.mono/
     mv $RUNNER_TEMP/templates /home/runner/.local/share/godot/export_templates/4.4.1.stable.mono/
     
     rm $RUNNER_TEMP/templates-ver
