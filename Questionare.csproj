@@ -4,16 +4,14 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CSharpChatReceiver">
-      <HintPath>S:\dev\iql\CSharpChatReceiver\bin\Debug\net6.0\CSharpChatReceiver.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Remove="GodotSharpEditor" />
     <PackageReference Remove="Godot.SourceGenerators" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="scenes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="S:\dev\iql\CSharpChatReceiver\CSharpChatReceiver.csproj" />
   </ItemGroup>
 </Project>

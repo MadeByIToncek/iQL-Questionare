@@ -47,7 +47,7 @@ public partial class Controller : Node2D {
 	[Export] public Node2D Answers;
 	[Export] public Node2D Box;
 
-	private readonly List<ChatItem> _messages = new(64);
+	private readonly List<string> _messages = new(64);
 	private readonly Dictionary<string, int> _votes = new(64);
 
 	private List<Question> _questions;
@@ -314,11 +314,6 @@ public partial class Controller : Node2D {
 		};
 		_chatReceiver.MessageEvent += (_, e) => {
 			if (e is MessageEventArgs args) {
-				_messages.Add(args.Item);
-				if (_messages.Count > 64) {
-					_messages.RemoveAt(0);
-				}
-
 				if (args.Item.Message.Trim().Length == 1) {
 					string msg = args.Item.Message.Trim();
 					if (int.TryParse(msg, out int result) && !(_isShowingAnswer || _isSuppressed)) {
@@ -329,18 +324,45 @@ public partial class Controller : Node2D {
 							4 => 4,
 							_ => -1
 						};
-						_votes[args.Item.ChatAuthor.Name] = vote;
+						if (_votes.TryGetValue(args.Item.ChatAuthor.ChannelId, out int previousVote)) {
+							_messages.Add("[b]" + args.Item.ChatAuthor.Name + "[/b]" +
+							              $" => [color=\"{SelectColor(previousVote)}\"]██[/color] --> [color=\"{SelectColor(vote)}\"]██[/color]!");
+						}
+						else {
+							_messages.Add("[b]" + args.Item.ChatAuthor.Name + "[/b]" +
+							              $" => Voted [color=\"{SelectColor(vote)}\"]██[/color]!");
+						}
+
+						_votes[args.Item.ChatAuthor.ChannelId] = vote;
 					}
-					// else GD.Print("Mist");
+					else {
+						GD.Print(args.Item.ChatAuthor.Name + " => " + args.Item.Message);
+						_messages.Add("[b]" + args.Item.ChatAuthor.Name + "[/b]" + " => " + args.Item.Message);
+					}
+
+					UpdateRatios();
 				}
 
-				UpdateRatios();
+				if (_messages.Count > 64) {
+					_messages.RemoveAt(0);
+				}
+
 				UpdateChatDisplay();
 				GD.Print(args.Item.ChatAuthor.Name + " => " + args.Item.Message);
 			}
 		};
 		_chatReceiver.Start();
 		Timer.Start();
+	}
+
+	private static string SelectColor(int vote) {
+		return vote switch {
+			1 => "ff2200",
+			2 => "ffcc00",
+			3 => "44ff00",
+			4 => "0099ff",
+			_ => "ffffff"
+		};
 	}
 
 	private void UpdateRatios() {
@@ -434,10 +456,7 @@ public partial class Controller : Node2D {
 	}
 
 	private void UpdateChatDisplay() {
-		string output = "";
-		foreach (ChatItem t in _messages) {
-			output += $"[b]{t.ChatAuthor.Name}[/b] >> {t.Message}\n";
-		}
+		string output = _messages.Aggregate("", (current, t) => current + t + "\n");
 
 		ChatHistory.SetText(output);
 	}
