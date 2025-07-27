@@ -1,7 +1,11 @@
 #!/bin/bash
 
 if [ ! -d /tmp/engine-godot ]; then
-    sudo apt-get install jq unzip -y
+    wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+    sudo dpkg -i packages-microsoft-prod.deb
+    rm packages-microsoft-prod.deb
+
+    sudo apt-get install jq unzip dotnet-sdk-8.0 -y
 
     curl https://api.github.com/repos/godotengine/godot/releases/latest > /tmp/engine-ver
 
@@ -18,7 +22,7 @@ if [ ! -d /tmp/engine-godot ]; then
     rm /tmp/godot.zip
 fi
 
-if [ ! -d /tmp/templates.tpz ]; then
+if [ ! -d /tmp/templates ]; then
     sudo apt-get install jq unzip -y
 
     curl https://api.github.com/repos/godotengine/godot/releases/latest > /tmp/templates-ver
@@ -29,6 +33,7 @@ if [ ! -d /tmp/templates.tpz ]; then
     echo "$url"
     echo "$url"|xargs wget -q -O "templates.tpz" -c {}
 
+    unzip /tmp/templates.tpz
 fi
 
 exit 0

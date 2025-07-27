@@ -11,12 +11,15 @@
   <ItemGroup>
     <Folder Include="scenes\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="S:\dev\iql\CSharpChatReceiver\CSharpChatReceiver.csproj" />
-  </ItemGroup>
 
     <ItemGroup>
         <Content Include=".github\workflows\godot.yml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="CSharpChatReceiver">
+        <HintPath>libs\CSharpChatReceiver.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>

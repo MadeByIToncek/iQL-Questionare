@@ -208,7 +208,7 @@ autowrap_mode = 2
 
 [node name="Window" type="Window" parent="."]
 title = "Configuration window"
-position = Vector2i(1995, 35)
+position = Vector2i(1995, 36)
 size = Vector2i(445, 700)
 unresizable = true
 
