@@ -1,0 +1,30 @@
+﻿name: godot.yml
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    #tags:
+    #  - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    branches:
+      - 'ci'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+          cache: true
+
+      - name: Cache Godot Engine Stuff
+        id: cache-godot
+        uses: actions/cache@v4
+        with:
+          path: |
+            /tmp/engine-godot
+            /tmp/templates.tpz
+          key: ${{ runner.os }}-primes
