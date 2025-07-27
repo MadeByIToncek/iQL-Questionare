@@ -41,4 +41,6 @@ if [ ! -d $RUNNER_TEMP/templates ]; then
     rm $RUNNER_TEMP/templates.tpz
 fi
 
+mkdir build
+
 exit 0
