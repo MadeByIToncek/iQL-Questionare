@@ -9,7 +9,7 @@ if [ ! -d /tmp/engine-godot ]; then
     url=$(cat /tmp/engine-ver|jq '.assets[] | select (.name | endswith("_mono_linux_x86_64.zip"))' | jq '.browser_download_url')
 
     echo "$url"
-    echo "$url"|xargs wget -O "godot.zip" -c {}
+    echo "$url"|xargs wget -q -O "godot.zip" -c {}
 
     unzip /tmp/godot.zip
     mv /tmp/Godot_* /tmp/engine-godot
@@ -27,7 +27,8 @@ if [ ! -d /tmp/templates.tpz ]; then
     url=$(cat /tmp/templates-ver|jq '.assets[] | select (.name | endswith("_mono_export_templates.tpz"))' | jq '.browser_download_url')
 
     echo "$url"
-    echo "$url"|xargs wget -O "templates.tpz" -c {}
+    echo "$url"|xargs wget -q -O "templates.tpz" -c {}
 
 fi
 
+exit 0
