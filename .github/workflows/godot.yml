@@ -20,15 +20,15 @@ jobs:
         uses: actions/cache@v4
         with:
           path: |
-            /${{ runner.temp }}/engine-godot
-            /${{ runner.temp }}/templates.tpz
+            ${{ runner.temp }}/engine-godot
+            ${{ runner.temp }}/templates.tpz
           key: ${{ runner.os }}-godot
           
       - name: Install Godot Engine and Templates
         run: bash ./ci/install-godot.sh
         
       - name: Build Executables
-        run: /${{ runner.temp }}/engine-godot/godot --headless --export-release "Windows Desktop CI" ./build/Questionare.exe
+        run: ${{ runner.temp }}/engine-godot/godot --headless --export-release "Windows Desktop CI" ./build/Questionare.exe
       
       - name: Package Executables
         run: bash ./ci/package-files.sh
