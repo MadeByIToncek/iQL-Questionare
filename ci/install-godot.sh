@@ -1,11 +1,7 @@
 #!/bin/bash
 
 if [ ! -d /tmp/engine-godot ]; then
-    wget https://packages.microsoft.com/config/debian/12/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-    sudo dpkg -i packages-microsoft-prod.deb
-    rm packages-microsoft-prod.deb
-
-    sudo apt-get install jq unzip dotnet-sdk-8.0 -y
+    sudo apt-get install jq unzip -y
 
     curl https://api.github.com/repos/godotengine/godot/releases/latest > /tmp/engine-ver
 
@@ -17,7 +13,8 @@ if [ ! -d /tmp/engine-godot ]; then
 
     unzip /tmp/godot.zip
     mv /tmp/Godot_* /tmp/engine-godot
-
+    mv /tmp/engine-godot/Godot_* /tmp/engine-godot/godot
+    
     rm /tmp/engine-ver
     rm /tmp/godot.zip
 fi

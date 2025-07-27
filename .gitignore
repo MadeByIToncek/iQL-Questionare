@@ -4,3 +4,4 @@
 *.user
 .idea/
 /build
+/results

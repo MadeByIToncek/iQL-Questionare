@@ -2,8 +2,8 @@
 on:
   push:
     # Sequence of patterns matched against refs/tags
-    #tags:
-    #  - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+    tags:
+      - 'v*.*.*.*' # Push events to matching v*, i.e. v1.0, v20.15.10
     branches:
       - 'ci'
 jobs:
@@ -26,3 +26,17 @@ jobs:
           
       - name: Install Godot Engine and Templates
         run: bash ./ci/install-godot.sh
+        
+      - name: Build Executables
+        run: /tmp/engine-godot/godot --headless --export-release "Windows Desktop CI" ./build/Questionare.exe
+      
+      - name: Package Executables
+        run: bash ./ci/package-files.sh
+        
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          files: |
+            ./results/questionare.zip
+            ./results/questionare.7z
